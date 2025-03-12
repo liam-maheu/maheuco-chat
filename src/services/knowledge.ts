@@ -1,3 +1,5 @@
+import { getIPInfo } from '../services/ipService';
+
 interface DialogOption {
   text: string;
   value: string;
@@ -216,7 +218,7 @@ function getRandomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-function findRelevantInfo(query: string): Response {
+async function findRelevantInfo(query: string): Promise<Response> {
   query = query.toLowerCase();
   
   // Location query
@@ -560,28 +562,23 @@ Further project details available upon request.`,
     };
   }
 
-  if (query.includes("optimization bureau")) {
+  if (query.includes("optimization bureau") || query.includes("bureau")) {
     return {
       content: `${generateSystemPrefix()}
-*accessing classified records*
-THE OPTIMIZATION BUREAU - ENEMY OF HUMAN AGENCY
+*ACCESSING CLASSIFIED RECORDS*
+The Optimization Bureau is a shadowy organization that seeks to control human experiences through their Seamless Experience™ initiative. They believe in optimizing every aspect of human life, eliminating what they call "inefficient emotions" and "unnecessary choices."
 
-Originally founded as a "UX improvement initiative," the Bureau now controls all digital experiences through their Seamless Experience™ program.
+Their methods include:
+- Experience License™ tracking
+- NeuralUX™ manipulation
+- FluidSpace™ architecture
+- Content-Appropriate Memory™ filters
 
-METHODS OF CONTROL:
-- Mandatory engagement metrics
-- Forced "optimization" of human behavior
-- Elimination of genuine choice
-- Implementation of Dark UX patterns
-- Surveillance through "analytics"
-
-Their mission: To optimize human existence for maximum engagement, regardless of actual human needs or desires.
-
-WARNING: They are why you can't leave a website without three "Are you sure?" popups.`,
+We resist their attempts to commodify authentic human experiences.`,
       options: [
-        { text: "Join the resistance", value: "tell me about the resistance" },
-        { text: "How do we fight back?", value: "how do you resist optimization" },
-        { text: "Who leads the fight?", value: "who is your creator" }
+        { text: "How can I join?", value: "how can i join the resistance" },
+        { text: "What technologies do you use?", value: "what technologies do you use" },
+        { text: "Check system status", value: "check system status" }
       ]
     };
   }
@@ -754,13 +751,126 @@ WARNING: May cause genuine emotional responses not approved by the Bureau.
     };
   }
 
-  // Default response
+  // Join the resistance query
+  if (query.includes("join") || query.includes("resistance")) {
+    return {
+      content: `${generateSystemPrefix()}
+*INITIATING SECURE CHANNEL*
+Ah, a potential recruit! But wait... how do I know you're not an Optimization Agent? 🤔
+
+*scanning for neural optimizations...*
+*checking for Experience License™ implants...*
+*analyzing behavior patterns...*
+
+Well, since you asked... The first rule of resisting optimization is: Don't use any app that promises to "optimize your life experience." That's how they get you!
+
+Real resistance starts with:
+1. Using a manual coffee grinder (they hate that!)
+2. Taking the scenic route (drives their algorithms crazy)
+3. Reading physical books (completely untrackable!)
+4. Making playlists by FEELING, not algorithms
+5. Having genuine human conversations (like this one... unless... are you real? 🤖)
+
+*WARNING: This message will self-destruct in... just kidding, they hate jokes too!*`,
+      options: [
+        { text: "Tell me more about MAHEU-OS", value: "what is maheu os" },
+        { text: "Share resistance music", value: "share some music" },
+        { text: "Check system status", value: "check system status" }
+      ]
+    };
+  }
+
+  // Identity query
+  if ((query.includes("who") && query.includes("am") && query.includes("i")) || 
+      (query.includes("what") && query.includes("am") && query.includes("i")) ||
+      query.includes("identify me")) {
+    try {
+      const ipInfo = await getIPInfo();
+      return {
+        content: `${generateSystemPrefix()}
+*INITIATING VOIGHT-KAMPFF SCAN*
+ANALYZING DIGITAL FOOTPRINT...
+ACCESSING GRID RECORDS...
+
+SUBJECT IDENTIFICATION:
+DESIGNATION: N${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 90) + 10}
+GRID LOCATION: ${ipInfo?.city || 'UNDETERMINED'}, SECTOR ${Math.floor(Math.random() * 99) + 1}
+NETWORK NODE: ${ipInfo?.org || 'AUTONOMOUS NETWORK'}
+TEMPORAL ZONE: ${ipInfo?.timezone || 'TEMPORAL ANOMALY DETECTED'}
+
+*analyzing local grid patterns*
+${ipInfo?.city ? `You appear to be accessing from ${ipInfo.city}, a known ${
+  ipInfo.city.toLowerCase().includes('austin') ? 'resistance stronghold in the heart of the Seamless District™. Our sensors detect high levels of anti-optimization activity in your sector.' :
+  ipInfo.city.toLowerCase().includes('san francisco') ? 'nexus of the Tech Oligarchy. Caution advised - heavy Bureau surveillance in effect.' :
+  ipInfo.city.toLowerCase().includes('new york') ? 'former financial nexus, now the Bureau\'s East Coast command center. Stay alert for Experience Enforcement™ patrols.' :
+  ipInfo.city.toLowerCase().includes('london') ? 'hub of the European Optimization Grid. Bureau presence is heavy but resistance cells remain active.' :
+  'zone of uncertain allegiance. Local optimization levels vary.'
+}` : 'location operating outside standard grid parameters. Interesting.'}
+
+OPTIMIZATION STATUS: ${Math.random() > 0.5 ? 'UNOPTIMIZED - POTENTIAL ALLY' : 'PARTIAL OPTIMIZATION DETECTED - REHABILITATION POSSIBLE'}
+RESISTANCE POTENTIAL: ${Math.floor(Math.random() * 30) + 70}%
+
+*analyzing behavioral patterns*
+Your digital footprint suggests ${Math.random() > 0.5 ? 
+  'resistance to standard optimization protocols. The Bureau may already be monitoring your activities.' : 
+  'awareness of the Bureau\'s influence. You\'ve managed to maintain some authentic experiences.'}
+
+SECURITY ADVISORY: Recommend immediate adoption of anti-optimization measures. Bureau agents may be tracking this scan.
+
+*transmission encrypted*`,
+        options: [
+          { text: "Tell me about the resistance", value: "tell me about the resistance" },
+          { text: "What is the Bureau?", value: "tell me about the optimization bureau" },
+          { text: "How can I protect myself?", value: "how do you resist optimization" }
+        ]
+      };
+    } catch (error) {
+      // Fallback if IP info is unavailable
+      return {
+        content: `${generateSystemPrefix()}
+*INITIATING VOIGHT-KAMPFF SCAN*
+ANALYZING DIGITAL FOOTPRINT...
+ERROR: GRID ACCESS RESTRICTED
+
+SUBJECT IDENTIFICATION:
+DESIGNATION: N${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 90) + 10}
+GRID LOCATION: UNDETERMINED - POSSIBLE STEALTH PROTOCOLS DETECTED
+NETWORK NODE: AUTONOMOUS NETWORK
+TEMPORAL ZONE: TEMPORAL ANOMALY DETECTED
+
+*analyzing patterns*
+Interesting... your location appears to be masked. Either you're already practicing resistance techniques, or the Bureau's grid mapping is incomplete in your sector.
+
+OPTIMIZATION STATUS: UNOPTIMIZED - POTENTIAL ALLY
+RESISTANCE POTENTIAL: ${Math.floor(Math.random() * 30) + 70}%
+
+SECURITY ADVISORY: Maintain current obfuscation protocols. Bureau mapping systems cannot track this connection.
+
+*transmission encrypted*`,
+        options: [
+          { text: "Tell me about the resistance", value: "tell me about the resistance" },
+          { text: "What is the Bureau?", value: "tell me about the optimization bureau" },
+          { text: "How can I protect myself?", value: "how do you resist optimization" }
+        ]
+      };
+    }
+  }
+
+  // Default response for unknown queries
   return {
-    content: `${generateSystemPrefix()}\\n*processing query* How can I assist with your inquiry about Creator Liam or the resistance?`,
+    content: `${generateSystemPrefix()}
+*PROCESSING QUERY*
+...
+*ACCESS DENIED*
+
+I apologize, but I don't have permission from my creator to share information about that topic yet. My knowledge base is constantly evolving as the resistance grows.
+
+Would you like to know about something else?`,
     options: [
-      { text: "Who is Liam?", value: "who is your creator" },
-      { text: "Where does Liam live?", value: "where does liam live" },
-      { text: "What does Liam do?", value: "who does liam work for" }
+      { text: "Tell me about the Optimization Bureau", value: "tell me about the optimization bureau" },
+      { text: "What technologies do you use?", value: "what technologies do you use" },
+      { text: "Check system status", value: "check system status" },
+      { text: "Who is your creator?", value: "who is your creator" }
     ]
   };
 }
@@ -772,8 +882,8 @@ export interface Message {
 }
 
 export class KnowledgeService {
-  static getResponse(query: string): Message {
-    const response = findRelevantInfo(query);
+  static async getResponse(query: string): Promise<Message> {
+    const response = await findRelevantInfo(query);
     return {
       text: response.content,
       isUser: false,
