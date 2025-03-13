@@ -892,50 +892,64 @@ How may I assist you today?`,
 
   if (isLoading) {
     return (
-      <TerminalContainer>
-        <ContentWrapper style={{ padding: 0 }}>
-          <Header>MAHEU CORP - INITIALIZING SYSTEMS</Header>
-          <LoadingContainer>
-            <LoadingText>INITIALIZING MAHEU-OS...</LoadingText>
-          </LoadingContainer>
-        </ContentWrapper>
-      </TerminalContainer>
+      <>
+        <GlobalStyle />
+        <TerminalContainer>
+          <CustomCursor 
+            className={isHovering ? 'hovering' : ''}
+            style={{ 
+              left: `${cursorPos.x}px`, 
+              top: `${cursorPos.y}px`,
+              transform: 'translate(-50%, -50%)'
+            }} 
+          />
+          <ContentWrapper style={{ padding: 0 }}>
+            <Header>MAHEU CORP - INITIALIZING SYSTEMS</Header>
+            <LoadingContainer>
+              <LoadingText>INITIALIZING MAHEU-OS...</LoadingText>
+            </LoadingContainer>
+          </ContentWrapper>
+        </TerminalContainer>
+      </>
     );
   }
 
   if (!isAuthenticated) {
     return (
-      <TerminalContainer>
-        <CustomCursor 
-          className={isHovering ? 'hovering' : ''}
-          style={{ 
-            left: `${cursorPos.x}px`, 
-            top: `${cursorPos.y}px`,
-            transform: 'translate(-50%, -50%)'
-          }} 
-        />
-        <ContentWrapper className="password-screen">
-          <Header className="password-header">MAHEU CORP - SECURITY CHECKPOINT</Header>
-          <PasswordContainer>
-            <PasswordPrompt>ENTER ACCESS CODE</PasswordPrompt>
-            <PasswordForm onSubmit={handlePasswordSubmit}>
-              <PasswordInput
-                ref={passwordRef}
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="●●●●●"
-                maxLength={5}
-                autoComplete="off"
-                spellCheck={false}
-              />
-              <ErrorMessage className={showError ? 'visible' : ''}>
-                INVALID ACCESS CODE - ACCESS DENIED
-              </ErrorMessage>
-            </PasswordForm>
-          </PasswordContainer>
-        </ContentWrapper>
-      </TerminalContainer>
+      <>
+        <GlobalStyle />
+        <TerminalContainer>
+          <CustomCursor 
+            className={isHovering ? 'hovering' : ''}
+            style={{ 
+              left: `${cursorPos.x}px`, 
+              top: `${cursorPos.y}px`,
+              transform: 'translate(-50%, -50%)'
+            }} 
+          />
+          <ContentWrapper className="password-screen">
+            <Header className="password-header">MAHEU CORP - SECURITY CHECKPOINT</Header>
+            <PasswordContainer>
+              <PasswordPrompt>ENTER ACCESS CODE</PasswordPrompt>
+              <PasswordForm onSubmit={handlePasswordSubmit}>
+                <PasswordInput
+                  ref={passwordRef}
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="●●●●●"
+                  maxLength={5}
+                  autoComplete="off"
+                  spellCheck={false}
+                />
+                <ErrorMessage className={showError ? 'visible' : ''}>
+                  INVALID ACCESS CODE - ACCESS DENIED
+                </ErrorMessage>
+              </PasswordForm>
+            </PasswordContainer>
+          </ContentWrapper>
+        </TerminalContainer>
+      </>
     );
   }
 
